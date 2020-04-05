@@ -9,6 +9,8 @@
 import UIKit
 import MapKit
 
+
+
 class LocationSearchTable: UITableViewController {
   
   // MARK: - PROPERTIES
@@ -19,6 +21,8 @@ class LocationSearchTable: UITableViewController {
   // mapView is a handle to the map from the previous screen
   // Search queries rely on a map region to prioritize local results
   var mapView: MKMapView? = nil
+  
+  var handleMapSearchDelegate: HandleMapSearch?
   
   
   // MARK: - METHODS
@@ -100,6 +104,17 @@ extension LocationSearchTable {
     cell.detailTextLabel?.text = parseAddress(selectedItem: selectedItem)
     
     return cell
+  }
+}
+
+// MARK: - DidSelectRowAt
+extension LocationSearchTable {
+  
+  /// When a search result row is selected, find the appropriate placemark based on the row number. Then pass the placemark to the map controller via the custom protocol method. Lastly, close the search results modal so the user can see the map.
+  override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    let selectedItem = matchingItems[indexPath.row].placemark
+    handleMapSearchDelegate?.dropPinZoomIn(placemark: selectedItem)
+    dismiss(animated: true, completion: nil)
   }
 }
 

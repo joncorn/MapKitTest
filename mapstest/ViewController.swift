@@ -46,6 +46,7 @@ class ViewController: UIViewController {
     
     // Points to our tableview controller to displace the search results
     let locationSearchTable = storyboard!.instantiateViewController(withIdentifier: "LocationSearchTable") as! LocationSearchTable
+    locationSearchTable.handleMapSearchDelegate = self
     resultSearchController = UISearchController(searchResultsController: locationSearchTable)
     resultSearchController?.searchResultsUpdater = locationSearchTable
     
@@ -86,7 +87,7 @@ extension ViewController: CLLocationManagerDelegate {
       print("location: \(location)")
       
       // span is the "frame" W x H of the map
-      let span = MKCoordinateSpan(latitudeDelta: 0.10, longitudeDelta: 0.10)
+      let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
       let region = MKCoordinateRegion(center: location.coordinate, span: span)
       mapView.setRegion(region, animated: true)
     }
@@ -119,7 +120,7 @@ extension ViewController: HandleMapSearch {
       annotation.subtitle = "\(city) \(state)"
     }
     mapView.addAnnotation(annotation)
-    let span = MKCoordinateSpan(latitudeDelta: 0.10, longitudeDelta: 0.10)
+    let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
     let region = MKCoordinateRegion(center: placemark.coordinate, span: span)
     mapView.setRegion(region, animated: true)
   }
