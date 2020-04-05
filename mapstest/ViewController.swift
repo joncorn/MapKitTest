@@ -109,10 +109,13 @@ extension ViewController: HandleMapSearch {
     // Clear existing pins
     mapView.removeAnnotations(mapView.annotations)
     
+    // Creates the message box above the pin
     let annotation = MKPointAnnotation()
     annotation.coordinate = placemark.coordinate
+    // With title
     annotation.title = placemark.name
     if let city = placemark.locality, let state = placemark.administrativeArea {
+      // With Subtitle
       annotation.subtitle = "\(city) \(state)"
     }
     mapView.addAnnotation(annotation)
