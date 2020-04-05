@@ -18,7 +18,6 @@ class ViewController: UIViewController {
   // MARK: - OUTLETS
   @IBOutlet weak var mapView: MKMapView!
   
-  
   // MARK: - VIEW LIFECYCLE
   override func viewDidLoad() {
     super.viewDidLoad()

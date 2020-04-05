@@ -50,3 +50,23 @@ extension LocationSearchTable: UISearchResultsUpdating {
   }
 }
 
+// MARK: - TABLEVIEW DATASOURCE
+extension LocationSearchTable {
+  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    // Array where we store retrieved places determines the number of rows
+    return matchingItems.count
+  }
+  
+  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(withIdentifier: "resultCell", for: indexPath)
+    
+    // PLacemark is the name of the map item
+    let selectedItem = matchingItems[indexPath.row].placemark
+    
+    cell.textLabel?.text = selectedItem.name
+    cell.detailTextLabel?.text = ""
+    
+    return cell
+  }
+}
+
