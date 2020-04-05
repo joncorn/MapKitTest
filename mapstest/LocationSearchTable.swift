@@ -20,7 +20,40 @@ class LocationSearchTable: UITableViewController {
   // Search queries rely on a map region to prioritize local results
   var mapView: MKMapView? = nil
   
+  
+  // MARK: - METHODS
+  
+  /**
+   Converts the placemark to a custom address format like: "4 Melrose Place, Washington DC".
+   
+   It's not important to know how the above code works. But basically, it adds commas and spaces, even if some of the properties come back as nil.
+   For example, it doesn't make sense to split up the string with a comma if the street information is missing.
+   */
+  func parseAddress(selectedItem:MKPlacemark) -> String {
+    // Put a space between "4" and "Melrose Place"
+    let firstSpace = (selectedItem.subThoroughfare != nil && selectedItem.thoroughfare != nil ) ? " " : ""
+    // Put comma between street and city/state
+    let comma = (selectedItem.subThoroughfare != nil || selectedItem.thoroughfare != nil) && (selectedItem.subAdministrativeArea != nil || selectedItem.subAdministrativeArea != nil) ? ", " : ""
+    // Put a space between "Washington" and "DC"
+    let secondSpace = (selectedItem.subAdministrativeArea != nil && selectedItem.administrativeArea != nil) ? " " : ""
+    let addressLine = String(format: "%@%@%@%@%@%@%@",
+                             // Street number
+                             selectedItem.subThoroughfare ?? "",
+                             firstSpace,
+                             // Street name
+                             selectedItem.thoroughfare ?? "",
+                             comma,
+                             // City
+                             selectedItem.locality ?? "",
+                             secondSpace,
+                             // State
+                             selectedItem.administrativeArea ?? ""
+    )
+    return addressLine
+  }
+  
 }
+
 
 // MARK: - SearchController delegate
 extension LocationSearchTable: UISearchResultsUpdating {
@@ -64,7 +97,7 @@ extension LocationSearchTable {
     let selectedItem = matchingItems[indexPath.row].placemark
     
     cell.textLabel?.text = selectedItem.name
-    cell.detailTextLabel?.text = ""
+    cell.detailTextLabel?.text = parseAddress(selectedItem: selectedItem)
     
     return cell
   }
